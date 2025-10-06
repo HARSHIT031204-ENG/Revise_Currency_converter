@@ -10,8 +10,6 @@ function App() {
     const [toAmt, setToAmt] = useState(0);
     const { data, loading } = useFetch(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${from}.json`);
 
-  
-
     return (
         <>
             <Page currData={data} from={from} setFrom={setFrom} to={to} setTo={setTo} fromAmt={fromAmt} setFromAmt={setFromAmt} toAmt={toAmt} setToAmt={setToAmt}/>
