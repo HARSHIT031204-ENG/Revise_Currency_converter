@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useId, useState } from "react";
 import useFetch from "../Hooks/useFetch";
-const page = ({ data, from, setFrom, to, setTo, fromAmt, setFromAmt, toAmt, setToAmt }) => {
-  const [list, setList] = useState({});
+const page = ({
+    currData,
+    from,
+    setFrom,
+    to,
+    setTo,
+    fromAmt,
+    setFromAmt,
+    toAmt,
+    setToAmt,
+}) => {
+    const [list, setList] = useState({});
+    const { data, loading } = useFetch(
+        "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json"
+    );
+    useEffect(() => {
+        setList(data);
+        console.log(data);
+    }, [data]);
 
-
-  
-  const {data, loading} = useFetch("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json");
-  setList(data);
     return (
         <div className="min-h-screen bg-[#0f172a] flex items-center justify-center font-display">
             {" "}
@@ -35,15 +48,22 @@ const page = ({ data, from, setFrom, to, setTo, fromAmt, setFromAmt, toAmt, setT
                             <select
                                 id="from-currency"
                                 className="bg-[#0f172a] px-4 py-3 text-white font-semibold focus:outline-none w-1/3"
-                                
                             >
-                               
+                                {Object.keys(list).map((key) =>
+                                    key === "usd" ? (
+                                        <option key={key} selected>
+                                            {key}
+                                        </option>
+                                    ) : (
+                                        <option key={key}>{key}</option>
+                                    )
+                                )}
                             </select>
                             <input
                                 type="number"
                                 placeholder="1,000"
                                 className="w-2/3 bg-[#0f172a] px-4 py-3 text-right text-white font-semibold focus:outline-none"
-                               />
+                            />
                         </div>
                     </div>
 
@@ -68,15 +88,21 @@ const page = ({ data, from, setFrom, to, setTo, fromAmt, setFromAmt, toAmt, setT
                             <select
                                 id="to-currency"
                                 className="bg-[#0f172a] px-4 py-3 text-white font-semibold focus:outline-none w-1/3"
-                               
                             >
-                                {/* {optionelem()} */}
+                                {Object.keys(list).map((key) =>
+                                    key === "inr" ? (
+                                        <option key={key} selected>
+                                            {key}
+                                        </option>
+                                    ) : (
+                                        <option key={key}>{key}</option>
+                                    )
+                                )}
                             </select>
                             <input
                                 type="number"
                                 placeholder="926.56"
                                 className="w-2/3 bg-[#0f172a] px-4 py-3 text-right text-white font-semibold focus:outline-none"
-                                
                             />
                         </div>
                     </div>
@@ -92,8 +118,7 @@ const page = ({ data, from, setFrom, to, setTo, fromAmt, setFromAmt, toAmt, setT
                     </div>
 
                     {/* Convert Button */}
-                    <button className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-500 transition"
-                    >
+                    <button className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-500 transition">
                         Convert
                     </button>
                 </div>
