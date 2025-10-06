@@ -7,6 +7,7 @@ const useFetch = ( url ) => {
     const execute = useCallback(async () => {
         setLoading(true);
             
+        
             try {
                 const currdata = await fetch(url);
                 const res = await currdata.json();
