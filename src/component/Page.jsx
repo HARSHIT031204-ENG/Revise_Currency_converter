@@ -13,13 +13,23 @@ const page = ({
     setToAmt,
 }) => {
     const [list, setList] = useState({});
+    const [value, setValue] = useState(0);
+
     const { data, loading } = useFetch(
         "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies.json"
     );
+
     useEffect(() => {
         setList(data);
-        console.log(data);
     }, [data]);
+
+    function convertedAmt() {
+        let totalAmt = fromAmt * currData[from][to];
+        setValue(currData[from][to])
+        setToAmt(totalAmt);
+    }
+
+    
 
     return (
         <div className="min-h-screen bg-[#0f172a] flex items-center justify-center font-display">
@@ -46,23 +56,20 @@ const page = ({
                         </label>
                         <div className="flex rounded-lg border border-slate-700 bg-[#0f172a] overflow-hidden">
                             <select
+                                value={from}
+                                onChange={(e) => setFrom(e.target.value)}
                                 id="from-currency"
                                 className="bg-[#0f172a] px-4 py-3 text-white font-semibold focus:outline-none w-1/3"
                             >
-                                {Object.keys(list).map((key) =>
-                                    key === "usd" ? (
-                                        <option key={key} selected>
-                                            {key}
-                                        </option>
-                                    ) : (
-                                        <option key={key}>{key}</option>
-                                    )
-                                )}
+                                {Object.keys(list).map((key) => (
+                                    <option key={key}>{key}</option>
+                                ))}
                             </select>
                             <input
-                                type="number"
-                                placeholder="1,000"
+                                type="text"
+                                value={fromAmt}
                                 className="w-2/3 bg-[#0f172a] px-4 py-3 text-right text-white font-semibold focus:outline-none"
+                                onChange={(e) => setFromAmt(e.target.value)}
                             />
                         </div>
                     </div>
@@ -86,22 +93,19 @@ const page = ({
                         </label>
                         <div className="flex rounded-lg border border-slate-700 bg-[#0f172a] overflow-hidden">
                             <select
+                                value={to}
                                 id="to-currency"
+                                onChange={(e) => setTo(e.target.value)}
                                 className="bg-[#0f172a] px-4 py-3 text-white font-semibold focus:outline-none w-1/3"
                             >
-                                {Object.keys(list).map((key) =>
-                                    key === "inr" ? (
-                                        <option key={key} selected>
-                                            {key}
-                                        </option>
-                                    ) : (
-                                        <option key={key}>{key}</option>
-                                    )
-                                )}
+                                {Object.keys(list).map((key) => (
+                                    <option key={key}>{key}</option>
+                                ))}
                             </select>
                             <input
+                                readOnly
+                                value={toAmt}
                                 type="number"
-                                placeholder="926.56"
                                 className="w-2/3 bg-[#0f172a] px-4 py-3 text-right text-white font-semibold focus:outline-none"
                             />
                         </div>
@@ -110,7 +114,7 @@ const page = ({
                     {/* Exchange Rate Info */}
                     <div className="text-center">
                         <p className="text-lg font-semibold text-white">
-                            1 USD = 0.92656 EUR
+                            1 {from} = {`${value}  ${to}`}
                         </p>
                         <p className="text-sm text-slate-400">
                             Last updated: 2 mins ago
@@ -118,7 +122,10 @@ const page = ({
                     </div>
 
                     {/* Convert Button */}
-                    <button className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-500 transition">
+                    <button
+                        onClick={convertedAmt}
+                        className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-500 transition"
+                    >
                         Convert
                     </button>
                 </div>
