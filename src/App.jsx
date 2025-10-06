@@ -14,7 +14,7 @@ function App() {
 
     return (
         <>
-            <Page data={data} from={from} setFrom={setFrom} to={to} setTo={setTo} fromAmt={fromAmt} setFromAmt={setFromAmt} toAmt={toAmt} setToAmt={setToAmt}/>
+            <Page currData={data} from={from} setFrom={setFrom} to={to} setTo={setTo} fromAmt={fromAmt} setFromAmt={setFromAmt} toAmt={toAmt} setToAmt={setToAmt}/>
         </>
     );
 }
